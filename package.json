@@ -1,0 +1,51 @@
+{
+  "name": "color-preview",
+  "displayName": "Color Preview",
+  "description": "Color Preview, enhance your development workflow with a feature that previews colors alongside their codes, whether they are in HEX, HSL, RGB, or RGBA formats. This functionality supports a range of file types, including HTML, CSS, JavaScript (JS), TypeScript (TS), and JSON. It allows you to view color previews directly within your files, improving accuracy and efficiency in your design and development processes.",
+  "version": "0.0.1",
+  "publisher": "RadhakantaRoy",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:roy-radhakanta/VsCode-color-preview.git"
+  },
+  "author": {
+    "name": "Radhakanta Roy",
+    "email": "radhakanta.roy.dev@gmail.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/roy-radhakanta/VsCode-color-preview#readme",
+  "icon": "https://github.com/roy-radhakanta/VsCode-color-preview/images/color-preview.png",
+  "galleryBanner": {
+    "color": "#8F00FF",
+    "theme": "dark"
+  },
+  "qna":"marketplace",
+  "pricing": "Free",
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [{
+      "command": "color-preview.colorPreview",
+      "title": "Color Preview"
+    }]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.93.0",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "eslint": "^9.9.1",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  }
+}
