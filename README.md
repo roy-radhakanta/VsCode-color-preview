@@ -26,14 +26,14 @@ it will automatically detect those colors and show you the preview.
 
 ### How to activate it on a project ?
 After installling it just press 
-<b>Mac</b>
-command + shift + p 
-    select Color Preview
+<b>Mac</b> | 
+command + shift + p |
+    select Color Preview |
     💥 Enjoy 🎉
     
-<b>Windows</b>
-control + shift + p 
-    select Color Preview
+<b>Windows</b> |
+control + shift + p |
+    select Color Preview |
     💥 Enjoy 🎉
 
 ### License 🔓
