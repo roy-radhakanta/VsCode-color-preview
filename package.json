@@ -20,7 +20,7 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/roy-radhakanta/VsCode-color-preview#readme",
-  "icon": "https://github.com/roy-radhakanta/VsCode-color-preview/images/color-preview.png",
+  "icon": "https://github.com/roy-radhakanta/VsCode-color-preview/blob/main/images/color-preview.png",
   "galleryBanner": {
     "color": "#8F00FF",
     "theme": "dark"

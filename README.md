@@ -1,4 +1,4 @@
-<img src="https://github.com/roy-radhakanta/VsCode-color-preview/images/color-preview.png" alt="Your PDF Tools" width="100" height="100" />
+<img src="https://github.com/roy-radhakanta/VsCode-color-preview/blob/main/images/color-preview.png" alt="Your PDF Tools" width="100" height="100" />
 
 # Color Preview (color-preview)
 
@@ -15,7 +15,7 @@ Enhance your development workflow with a feature that previews colors alongside 
 
 ### Preview
 
-<img src="https://github.com/roy-radhakanta/VsCode-color-preview/images/working-image-demo.png" alt="Your PDF Tools" width="500" height="500" />
+<img src="https://github.com/roy-radhakanta/VsCode-color-preview/blob/main/images/working-image-demo.png" alt="Your PDF Tools" width="500" height="500" />
 
 ### How it works ?
 
