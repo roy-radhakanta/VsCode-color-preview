@@ -3,3 +3,5 @@ node_modules
 *.vsix
 .DS_Store
 package-lock.json
+**/**/._.*
+**/**/._*

@@ -1,4 +1,4 @@
-<img src="https://github.com/roy-radhakanta/VsCode-color-preview/blob/main/images/color-preview.png" alt="Your PDF Tools" width="100" height="100" />
+<img src="https://raw.githubusercontent.com/roy-radhakanta/VsCode-color-preview/main/images/color-preview.png" alt="Color Preview" width="100" height="100" />
 
 # Color Preview (color-preview)
 
@@ -6,23 +6,30 @@ Enhance your development workflow with a feature that previews colors alongside 
 
 ### Supported Languages
 ```
-1. HTML
-2. CSS
-3. JS(JavaScript)
-4. TS(TypeScript)
-5. JSON
+    1. TypeScript (TS)
+    2. JavaScript (JS)
+    3. CSS
+    4. SCSS
+    5. HTML
+    6. JSON
 ```
 
 ### Preview
 
-<img src="https://github.com/roy-radhakanta/VsCode-color-preview/blob/main/images/working-image-demo.png" alt="Your PDF Tools" width="500" height="500" />
+<img src="https://raw.githubusercontent.com/roy-radhakanta/VsCode-color-preview/main/images/working-image-demo.png" alt="Color Preview" width="500" height="500" />
 
-### How it works ?
+### Features
 
-When you open, save, change tab on file it acts immediately and shows you the color preview by showing a small box besides the color value. 
+Enhance your development workflow with our advanced Color Preview Extension for Visual Studio Code. This extension provides real-time color previews, making it easier than ever to work with color codes in your codebase. Key features include:
 
-It is intelligent enough to detect the color on a page. There is no restriction if you are working on a project that has these [Supported Languages](#supported-languages), also if you have decleared colors on your tailwind.config.js
-it will automatically detect those colors and show you the preview.
+- **Instant Previews**: Automatically displays a color preview box next to color values as you open, save, or switch between files.
+
+- **Supported Languages**: Seamlessly integrates with TypeScript, JavaScript, CSS, SCSS, HTML, and JSON.
+
+- **Tailwind Integration**: Effortlessly detects and previews colors defined in your `tailwind.config.js`, enhancing your experience with Tailwind CSS.
+
+Elevate your coding efficiency and accuracy with dynamic, intelligent color previews tailored for professional and modern development environments.
+
 
 ### How to activate it on a project ?
 After installling it just press 
