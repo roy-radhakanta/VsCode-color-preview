@@ -33,15 +33,19 @@ Elevate your coding efficiency and accuracy with dynamic, intelligent color prev
 
 
 ### How to activate it on a project ?
-After installling it just press 
+To activate the extension in the project, follow these steps:
+
+    ⚠️ It does not save any state; you need to activate it again after closing VS Code.
+
 
 <b>Mac</b>
     ```command + shift + p``` |
         select ```Color Preview```
-        
+
 <b>Windows</b> |
 ```control + shift + p``` |
     select ```Color Preview```
+
 
 ### License 🔓
 This extension is licensed under [MIT License](https://github.com/roy-radhakanta/VsCode-color-preview/blob/main/LICENSE).
