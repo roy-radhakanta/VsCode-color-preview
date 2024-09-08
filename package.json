@@ -27,7 +27,7 @@
   },
   "qna":"marketplace",
   "pricing": "Free",
-  "activationEvents": [],
+  "activationEvents": ["onStartupFinished"],
   "main": "./extension.js",
   "contributes": {
     "commands": [{

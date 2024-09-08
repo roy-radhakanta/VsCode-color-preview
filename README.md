@@ -2,7 +2,7 @@
 
 # Color Preview (color-preview)
 
-Enhance your development workflow with a feature that previews colors alongside their codes, whether they are in HEX, HSL, RGB, or RGBA formats. This functionality supports a range of file types, including HTML, CSS, JavaScript (JS), TypeScript (TS), and JSON. It allows you to view color previews directly within your files, improving accuracy and efficiency in your design and development processes.
+Enhance your development workflow with a feature that previews colors alongside their codes, whether they are in HEX, HSL, RGB, or RGBA formats. This functionality supports a range of file types. It allows you to view color previews directly within your files, improving accuracy and efficiency in your design and development processes.
 
 ### Supported Languages
 ```
@@ -12,6 +12,7 @@ Enhance your development workflow with a feature that previews colors alongside 
     4. SCSS
     5. HTML
     6. JSON
+    7. SASS
 ```
 
 ### Preview
@@ -33,15 +34,14 @@ Elevate your coding efficiency and accuracy with dynamic, intelligent color prev
 
 ### How to activate it on a project ?
 After installling it just press 
-<b>Mac</b> | 
-command + shift + p |
-    select Color Preview |
-    💥 Enjoy 🎉
-    
+
+<b>Mac</b>
+    ```command + shift + p``` |
+        select ```Color Preview```
+        
 <b>Windows</b> |
-control + shift + p |
-    select Color Preview |
-    💥 Enjoy 🎉
+```control + shift + p``` |
+    select ```Color Preview```
 
 ### License 🔓
-See the LICENSE
+This extension is licensed under [MIT License](https://github.com/roy-radhakanta/VsCode-color-preview/blob/main/LICENSE).

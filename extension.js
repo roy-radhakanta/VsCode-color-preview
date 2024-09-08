@@ -5,15 +5,21 @@ const vscode = require("vscode");
  */
 
 function activate(context) {
+  const isFirstActivation = context.globalState.get('firstActivation', true);
+
+  if (isFirstActivation) {
+    vscode.window.showInformationMessage('Color Preview is Activated 🎉');
+    context.globalState.update('firstActivation', false);
+  }
+
   const disposable = vscode.commands.registerCommand(
     "color-preview.colorPreview",
     function () {
-      const languageSupport = ["scss", "css", "javascript", "typescript", "typescriptreact", "javascriptreact", "html", "json"];
+      const languageSupport = ["scss", "sass", "css", "javascript", "typescript", "typescriptreact", "javascriptreact", "html", "json"];
 
       // on open
       context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(function (document) {
-          console.log(document.languageId);
           if (languageSupport.includes(document.languageId)) {
             previewColors(document);
           }
@@ -23,7 +29,7 @@ function activate(context) {
       // on tab change
       context.subscriptions.push(
         vscode.window.onDidChangeActiveTextEditor((editor) => {
-        //   console.log(editor.document.languageId);
+          //   console.log(editor.document.languageId);
           if (editor && languageSupport.includes(editor.document.languageId)) {
             previewColors(editor.document);
           }
@@ -40,7 +46,7 @@ function activate(context) {
       );
 
       vscode.window.showInformationMessage(
-        "Color Preview is Added 🎉"
+        "Color Preview is now ready to work 🚀"
       );
     }
   );
@@ -148,7 +154,7 @@ function previewColors(openedFile) {
       parseInt(match[2]),
       parseInt(match[3]),
     ];
-	
+
     const [r, g, b] = hslToRgb(h, s / 100, l / 100);
     const rgbColor = `rgb(${r}, ${g}, ${b})`;
 
@@ -191,34 +197,34 @@ function previewColors(openedFile) {
  * @returns {number[]}
 */
 function hslToRgb(h, s, l) {
-    let r, g, b;
+  let r, g, b;
 
-    if (s === 0) {
-        r = g = b = l; // Achromatic
-    } else {
-		/**
-		 * @param {number} p
-		 * @param {number} q
-		 * @param {number} t
-		 * @returns {number}
-		*/
-        const hueToRgb = (p, q, t) => {
-            if (t < 0) t += 1;
-            if (t > 1) t -= 1;
-            if (t < 1/6) return p + (q - p) * 6 * t;
-            if (t < 1/2) return q;
-            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        };
+  if (s === 0) {
+    r = g = b = l; // Achromatic
+  } else {
+    /**
+     * @param {number} p
+     * @param {number} q
+     * @param {number} t
+     * @returns {number}
+    */
+    const hueToRgb = (p, q, t) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
 
-        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        const p = 2 * l - q;
-        r = hueToRgb(p, q, h / 360 + 1/3);
-        g = hueToRgb(p, q, h / 360);
-        b = hueToRgb(p, q, h / 360 - 1/3);
-    }
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hueToRgb(p, q, h / 360 + 1 / 3);
+    g = hueToRgb(p, q, h / 360);
+    b = hueToRgb(p, q, h / 360 - 1 / 3);
+  }
 
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
 function deactivate() {
