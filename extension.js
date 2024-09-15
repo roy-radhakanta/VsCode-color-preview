@@ -6,7 +6,7 @@ const HEXColorFinder = require('./hex-color-finder');
 const HSLColorFinder = require('./hsl-color-finder');
 const NamedColorFinder = require('./named-color-finder');
 
-const {mergeDecorationArrays} = require('./utility');
+const { mergeDecorationArrays } = require('./utility');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -54,7 +54,7 @@ function activate(context) {
       );
 
       vscode.window.showInformationMessage(
-        "Color Preview is now ready to work 🚀"
+        "Color Preview is ow ready to work 🚀"
       );
     }
   );
@@ -84,6 +84,41 @@ function previewColors(openedFile) {
   const namedDecorations = NamedColorFinder(text, openedFile);
 
   colorDecorations = mergeDecorationArrays([rgbDecorations, hexDecorations, hslDecorations, namedDecorations]);
+
+  hslaMatches.forEach((match) => {
+    /** @type {vscode.Position} */
+    const start = openedFile.positionAt(match.index);
+
+    /** @type {vscode.Position} */
+    const end = openedFile.positionAt(match.index + match[0].length);
+
+    /** @type {vscode.Range} */
+    const range = new vscode.Range(start, end);
+
+    const [h, s, l, a] = [
+      parseInt(match[1]),
+      parseInt(match[2]),
+      parseInt(match[3]),
+      parseFloat(match[4]),
+    ];
+
+    const [r, g, b] = hslToRgb(h, s / 100, l / 100);
+    const rgbColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+    colorDecorations.push({
+      range: range,
+      renderOptions: {
+        after: {
+          contentText: "",
+          backgroundColor: rgbColor,
+          border: "1px solid #000",
+          width: "16px",
+          height: "16px",
+          margin: "0 5px",
+        },
+      },
+    });
+  });
 
   /** @type {vscode.TextEditor}*/
   const activeEditor = vscode.window.activeTextEditor;
