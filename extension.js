@@ -46,7 +46,7 @@ function activate(context) {
       );
 
       vscode.window.showInformationMessage(
-        "Color Preview is now ready to work 🚀"
+        "Color Preview is ow ready to work 🚀"
       );
     }
   );
@@ -77,6 +77,9 @@ function previewColors(openedFile) {
   /** @type {RegExp} */
   const hslColorRegex = /hsl\((\d{1,3}),\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\)/g;
 
+  /** @type {RegExp} */
+  const hslaColorRegex = /hsla\((\d{1,3}),\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\s*,\s*(0?\.\d+|1|0)\)/g;
+
   /** @type {RegExpExecArray[]} */
   const hexMatches = [...text.matchAll(hexColorRegex)];
 
@@ -85,6 +88,9 @@ function previewColors(openedFile) {
 
   /** @type {RegExpExecArray[]} */
   const hslMatches = [...text.matchAll(hslColorRegex)];
+
+  /** @type {RegExpExecArray[]} */
+  const hslaMatches = [...text.matchAll(hslaColorRegex)];
 
   /** @type {vscode.DecorationOptions[]} */
   const colorDecorations = [];
@@ -157,6 +163,41 @@ function previewColors(openedFile) {
 
     const [r, g, b] = hslToRgb(h, s / 100, l / 100);
     const rgbColor = `rgb(${r}, ${g}, ${b})`;
+
+    colorDecorations.push({
+      range: range,
+      renderOptions: {
+        after: {
+          contentText: "",
+          backgroundColor: rgbColor,
+          border: "1px solid #000",
+          width: "16px",
+          height: "16px",
+          margin: "0 5px",
+        },
+      },
+    });
+  });
+
+  hslaMatches.forEach((match) => {
+    /** @type {vscode.Position} */
+    const start = openedFile.positionAt(match.index);
+
+    /** @type {vscode.Position} */
+    const end = openedFile.positionAt(match.index + match[0].length);
+
+    /** @type {vscode.Range} */
+    const range = new vscode.Range(start, end);
+
+    const [h, s, l, a] = [
+      parseInt(match[1]),
+      parseInt(match[2]),
+      parseInt(match[3]),
+      parseFloat(match[4]),
+    ];
+
+    const [r, g, b] = hslToRgb(h, s / 100, l / 100);
+    const rgbColor = `rgba(${r}, ${g}, ${b}, ${a})`;
 
     colorDecorations.push({
       range: range,
