@@ -57,7 +57,7 @@ function activate(context) {
       );
 
       vscode.window.showInformationMessage(
-        "Color Preview is ow ready to work 🚀"
+        "Color Preview is now ready to work 🚀"
       );
     }
   );
