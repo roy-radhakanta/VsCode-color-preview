@@ -12,15 +12,19 @@ function activate(context) {
     context.globalState.update('firstActivation', false);
   }
 
+  const supportedLanguages = ["scss", "sass", "css", "javascript", "typescript", "typescriptreact", "javascriptreact", "html", "json"];
+  if (vscode.window.activeTextEditor && supportedLanguages.includes(vscode.window.activeTextEditor.document.languageId)) {
+    previewColors(vscode.window.activeTextEditor.document);
+  }
+
   const disposable = vscode.commands.registerCommand(
     "color-preview.colorPreview",
     function () {
-      const languageSupport = ["scss", "sass", "css", "javascript", "typescript", "typescriptreact", "javascriptreact", "html", "json"];
 
       // on open
       context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(function (document) {
-          if (languageSupport.includes(document.languageId)) {
+          if (supportedLanguages.includes(document.languageId)) {
             previewColors(document);
           }
         })
@@ -29,8 +33,7 @@ function activate(context) {
       // on tab change
       context.subscriptions.push(
         vscode.window.onDidChangeActiveTextEditor((editor) => {
-          //   console.log(editor.document.languageId);
-          if (editor && languageSupport.includes(editor.document.languageId)) {
+          if (editor && supportedLanguages.includes(editor.document.languageId)) {
             previewColors(editor.document);
           }
         })
@@ -39,14 +42,14 @@ function activate(context) {
       // on save
       context.subscriptions.push(
         vscode.workspace.onDidSaveTextDocument((document) => {
-          if (languageSupport.includes(document.languageId)) {
+          if (supportedLanguages.includes(document.languageId)) {
             previewColors(document);
           }
         })
       );
 
       vscode.window.showInformationMessage(
-        "Color Preview is ow ready to work 🚀"
+        "Color Preview is now ready to work 🚀"
       );
     }
   );
@@ -67,153 +70,35 @@ function previewColors(openedFile) {
   /** @type {string} */
   const text = openedFile.getText();
 
-  /** @type {RegExp} */
-  const hexColorRegex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g;
-
-  /** @type {RegExp} */
-  const rgbaColorRegex =
-    /rgba?\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})(,\s*(0?\.\d+|1|0))?\)/g;
-
-  /** @type {RegExp} */
-  const hslColorRegex = /hsl\((\d{1,3}),\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\)/g;
-
-  /** @type {RegExp} */
-  const hslaColorRegex = /hsla\((\d{1,3}),\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\s*,\s*(0?\.\d+|1|0)\)/g;
-
-  /** @type {RegExpExecArray[]} */
-  const hexMatches = [...text.matchAll(hexColorRegex)];
-
-  /** @type {RegExpExecArray[]} */
-  const rgbaMatches = [...text.matchAll(rgbaColorRegex)];
-
-  /** @type {RegExpExecArray[]} */
-  const hslMatches = [...text.matchAll(hslColorRegex)];
-
-  /** @type {RegExpExecArray[]} */
-  const hslaMatches = [...text.matchAll(hslaColorRegex)];
-
   /** @type {vscode.DecorationOptions[]} */
   const colorDecorations = [];
 
-  hexMatches.forEach((match) => {
-    /** @type {vscode.Position} */
-    const start = openedFile.positionAt(match.index);
+  /** @type {{ regex: RegExp, process: (openedFile: vscode.TextDocument, match: RegExpMatchArray) => vscode.DecorationOptions }[]} */
+  const colorPatterns = [
+    { regex: /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g, process: createHexDecoration },
+    { regex: /rgba?\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})(,\s*(0?\.\d+|1|0))?\)/g, process: createRgbaDecoration },
+    { regex: /hsl\((\d{1,3}),\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\)/g, process: createHslDecoration },
+    { regex: /hsla\((\d{1,3}),\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\s*,\s*(0?\.\d+|1|0)\)/g, process: createHslaDecoration }
+  ];
 
-    /** @type {vscode.Position} */
-    const end = openedFile.positionAt(match.index + match[0].length);
-
-    /** @type {vscode.Range} */
-    const range = new vscode.Range(start, end);
-
-    colorDecorations.push({
-      range: range,
-      renderOptions: {
-        after: {
-          contentText: "",
-          backgroundColor: match[0],
-          border: "1px solid blue",
-          width: "16px",
-          height: "16px",
-          margin: "0 5px",
-        },
-      },
-    });
+  colorPatterns.forEach(({ regex, process }) => {
+    const matches = [...text.matchAll(regex)]
+    matches.forEach((match) => {
+      colorDecorations.push(process(openedFile, match));
+    })
   });
 
-  rgbaMatches.forEach((match) => {
-    /** @type {vscode.Position} */
-    const start = openedFile.positionAt(match.index);
+  applyDecorations(openedFile, colorDecorations);
+}
 
-    /** @type {vscode.Position} */
-    const end = openedFile.positionAt(match.index + match[0].length);
-
-    /** @type {vscode.Range} */
-    const range = new vscode.Range(start, end);
-
-    colorDecorations.push({
-      range: range,
-      renderOptions: {
-        after: {
-          contentText: "",
-          backgroundColor: match[0],
-          border: "1px solid #000",
-          width: "16px",
-          height: "16px",
-          margin: "0 5px",
-        },
-      },
-    });
-  });
-
-  hslMatches.forEach((match) => {
-    /** @type {vscode.Position} */
-    const start = openedFile.positionAt(match.index);
-
-    /** @type {vscode.Position} */
-    const end = openedFile.positionAt(match.index + match[0].length);
-
-    /** @type {vscode.Range} */
-    const range = new vscode.Range(start, end);
-
-    const [h, s, l] = [
-      parseInt(match[1]),
-      parseInt(match[2]),
-      parseInt(match[3]),
-    ];
-
-    const [r, g, b] = hslToRgb(h, s / 100, l / 100);
-    const rgbColor = `rgb(${r}, ${g}, ${b})`;
-
-    colorDecorations.push({
-      range: range,
-      renderOptions: {
-        after: {
-          contentText: "",
-          backgroundColor: rgbColor,
-          border: "1px solid #000",
-          width: "16px",
-          height: "16px",
-          margin: "0 5px",
-        },
-      },
-    });
-  });
-
-  hslaMatches.forEach((match) => {
-    /** @type {vscode.Position} */
-    const start = openedFile.positionAt(match.index);
-
-    /** @type {vscode.Position} */
-    const end = openedFile.positionAt(match.index + match[0].length);
-
-    /** @type {vscode.Range} */
-    const range = new vscode.Range(start, end);
-
-    const [h, s, l, a] = [
-      parseInt(match[1]),
-      parseInt(match[2]),
-      parseInt(match[3]),
-      parseFloat(match[4]),
-    ];
-
-    const [r, g, b] = hslToRgb(h, s / 100, l / 100);
-    const rgbColor = `rgba(${r}, ${g}, ${b}, ${a})`;
-
-    colorDecorations.push({
-      range: range,
-      renderOptions: {
-        after: {
-          contentText: "",
-          backgroundColor: rgbColor,
-          border: "1px solid #000",
-          width: "16px",
-          height: "16px",
-          margin: "0 5px",
-        },
-      },
-    });
-  });
-
+/**
+ * Apply decorations to the opened file
+ * @function applyDecorations
+ * @param {vscode.TextDocument} openedFile
+ * @param {vscode.DecorationOptions[]} colorDecorations
+ * @returns {void}
+ */
+function applyDecorations(openedFile, colorDecorations) {
   /** @type {vscode.TextEditor}*/
   const activeEditor = vscode.window.activeTextEditor;
 
@@ -224,9 +109,92 @@ function previewColors(openedFile) {
 
     /** @type {vscode.TextEditorDecorationType} */
     colorDecorationType = vscode.window.createTextEditorDecorationType({});
-
     activeEditor.setDecorations(colorDecorationType, colorDecorations);
   }
+}
+
+/**
+ * Create a decoration object
+ * @function createDecoration
+ * @param {vscode.TextDocument} openedFile
+ * @param {number} startIndex
+ * @param {number} length
+ * @param {string} backgroundColor
+ * @returns {vscode.DecorationOptions}
+ */
+function createDecoration(openedFile, startIndex, length, backgroundColor) {
+  /** @type {vscode.Position} */
+  const start = openedFile.positionAt(startIndex);
+
+  /** @type {vscode.Position} */
+  const end = openedFile.positionAt(startIndex + length);
+
+  /** @type {vscode.Range} */
+  const range = new vscode.Range(start, end);
+
+  return {
+    range: range,
+    renderOptions: {
+      after: {
+        contentText: "",
+        backgroundColor: backgroundColor,
+        border: "1px solid #000",
+        width: "16px",
+        height: "16px",
+        margin: "0 5px",
+      },
+    },
+  };
+}
+
+/**
+ * Create a hex color decoration
+ * @function createHexDecoration
+ * @param {vscode.TextDocument} openedFile
+ * @param {RegExpMatchArray} match
+ * @returns {vscode.DecorationOptions}
+ * */
+function createHexDecoration(openedFile, match) {
+  return createDecoration(openedFile, match.index, match[0].length, match[0]);
+}
+
+/**
+ * Create a rgba color decoration
+ * @function createRgbaDecoration
+ * @param {vscode.TextDocument} openedFile
+ * @param {RegExpMatchArray} match
+ * @returns {vscode.DecorationOptions}
+ */
+function createRgbaDecoration(openedFile, match) {
+  return createDecoration(openedFile, match.index, match[0].length, match[0]);
+}
+
+/**
+ * Create a hsl color decoration
+ * @function createHslDecoration
+ * @param {vscode.TextDocument} openedFile
+ * @param {RegExpMatchArray} match
+ * @returns {vscode.DecorationOptions}
+ */
+function createHslDecoration(openedFile, match) {
+  const [h, s, l] = [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
+  const [r, g, b] = hslToRgb(h, s / 100, l / 100);
+  const rgbColor = `rgb(${r}, ${g}, ${b})`;
+  return createDecoration(openedFile, match.index, match[0].length, rgbColor);
+}
+
+/**
+ * Create a hsla color decoration
+ * @function createHslaDecoration
+ * @param {vscode.TextDocument} openedFile
+ * @param {RegExpMatchArray} match
+ * @returns {vscode.DecorationOptions}
+ */
+function createHslaDecoration(openedFile, match) {
+  const [h, s, l, a] = [parseInt(match[1]), parseInt(match[2]), parseInt(match[3]), parseFloat(match[4])];
+  const [r, g, b] = hslToRgb(h, s / 100, l / 100);
+  const rgbaColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+  return createDecoration(openedFile, match.index, match[0].length, rgbaColor);
 }
 
 /**
