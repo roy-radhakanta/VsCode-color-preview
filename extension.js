@@ -18,6 +18,7 @@ function activate(context) {
   if (isFirstActivation) {
     vscode.window.showInformationMessage('Color Preview is Activated 🎉');
     context.globalState.update('firstActivation', false);
+    previewColors(vscode.window.activeTextEditor.document);
   }
 
   const disposable = vscode.commands.registerCommand(
