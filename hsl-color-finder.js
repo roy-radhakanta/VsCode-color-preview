@@ -3,7 +3,7 @@ const vscode = require('vscode');
 const { hslToRgb } = require('./utility');
 
 /** @type {RegExp} */
-const hslColorRegex = /hsl\((\d{1,3}),\s*(\d{1,3}%)\s*,\s*(\d{1,3}%)\)/g;
+const hslColorRegex = /hsla?\((\d{1,3}),\s*(\d{1,3}%?)\s*,\s*(\d{1,3}%?)\s*(,\s*(0?\.\d+|1|0))?\)/g;
 
 /**
  * @function HSLColorFinder
@@ -37,8 +37,13 @@ function HSLColorFinder(text, openedFile) {
             parseInt(match[3]),
         ];
 
-        const [r, g, b] = hslToRgb(h, s / 100, l / 100);
-        const rgbColor = `rgb(${r}, ${g}, ${b})`;
+        let a = 1;
+        if (match[4]) {
+            a = parseFloat(match[4]);
+        }
+
+        const [r, g, b, alpha] = hslToRgb(h, s / 100, l / 100, a);
+        const rgbColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 
         colorDecorations.push({
             range: range,

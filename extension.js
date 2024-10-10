@@ -6,7 +6,7 @@ const HEXColorFinder = require('./hex-color-finder');
 const HSLColorFinder = require('./hsl-color-finder');
 const NamedColorFinder = require('./named-color-finder');
 
-const {mergeDecorationArrays} = require('./utility');
+const { mergeDecorationArrays } = require('./utility');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -18,6 +18,7 @@ function activate(context) {
   if (isFirstActivation) {
     vscode.window.showInformationMessage('Color Preview is Activated 🎉');
     context.globalState.update('firstActivation', false);
+    previewColors(vscode.window.activeTextEditor.document);
   }
 
   const disposable = vscode.commands.registerCommand(
