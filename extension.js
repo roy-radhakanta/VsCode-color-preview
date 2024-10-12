@@ -30,7 +30,7 @@ function activate(context) {
       // on open
       context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(function (document) {
-          // Log.DEBUG(document.languageId);
+          Log.DEBUG(document.languageId);
           if (languageSupport.includes(document.languageId)) {
             previewColors(document);
           }
@@ -40,7 +40,7 @@ function activate(context) {
       // on tab change
       context.subscriptions.push(
         vscode.window.onDidChangeActiveTextEditor((editor) => {
-            Log.DEBUG(`On change --> ${editor.document.languageId}`);
+            // Log.DEBUG(`On change --> ${editor.document.languageId}`);
           if (editor && languageSupport.includes(editor.document.languageId)) {
             previewColors(editor.document);
           }
