@@ -1,10 +1,12 @@
 
+
 const vscode = require("vscode");
 
 const RGBColorFinder = require('./rgb-color-finder');
 const HEXColorFinder = require('./hex-color-finder');
 const HSLColorFinder = require('./hsl-color-finder');
 const NamedColorFinder = require('./named-color-finder');
+const {Log}  = require('./utility/log');
 
 const {mergeDecorationArrays} = require('./utility');
 
@@ -23,11 +25,12 @@ function activate(context) {
   const disposable = vscode.commands.registerCommand(
     "color-preview.colorPreview",
     function () {
-      const languageSupport = ["scss", "sass", "css", "javascript", "typescript", "typescriptreact", "javascriptreact", "html", "json"];
+      const languageSupport = ["scss", "sass", "css", "javascript", "typescript", "typescriptreact", "javascriptreact", "html", "json", "plaintext"];
 
       // on open
       context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(function (document) {
+          // Log.DEBUG(document.languageId);
           if (languageSupport.includes(document.languageId)) {
             previewColors(document);
           }
@@ -37,7 +40,7 @@ function activate(context) {
       // on tab change
       context.subscriptions.push(
         vscode.window.onDidChangeActiveTextEditor((editor) => {
-          //   console.log(editor.document.languageId);
+            Log.DEBUG(`On change --> ${editor.document.languageId}`);
           if (editor && languageSupport.includes(editor.document.languageId)) {
             previewColors(editor.document);
           }
@@ -47,6 +50,7 @@ function activate(context) {
       // on save
       context.subscriptions.push(
         vscode.workspace.onDidSaveTextDocument((document) => {
+          // Log.DEBUG(document.languageId);
           if (languageSupport.includes(document.languageId)) {
             previewColors(document);
           }
