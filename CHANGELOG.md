@@ -6,6 +6,19 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 
 ---
+### 1.2.2 - 12/10/2024
+
+### Added
+- VueJs, ReactJs, NextJs Framework support
+- Any Text File Support
+- Log Service
+- Named Color Support (e.g.- Red)
+- Color Bank for Named Color Added
+
+### Fixed
+- File separation for each color format
+
+---
 ### 1.1.2 - 08/09/2024
 
 ### Added
