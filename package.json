@@ -2,7 +2,7 @@
   "name": "vs-color-preview",
   "displayName": "Color Preview",
   "description": "Color Preview, enhance your development workflow with a feature that previews colors alongside their codes, whether they are in HEX, HSL, RGB, or RGBA formats. This functionality supports a range of file types, including HTML, CSS, JavaScript (JS), TypeScript (TS), and JSON. It allows you to view color previews directly within your files, improving accuracy and efficiency in your design and development processes.",
-  "version": "1.1.2",
+  "version": "1.2.2",
   "publisher": "RadhakantaRoy",
   "engines": {
     "vscode": "^1.93.0"
