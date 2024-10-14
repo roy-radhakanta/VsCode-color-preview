@@ -29,7 +29,7 @@ function mergeDecorationArrays(arrays) {
  * @param {number} a
  * @returns {number[]}
 */
-function hslToRgb(h, s, l, a) {
+function hslToRgb(h, s, l, a = 1) {
     let r, g, b;
   
     if (s === 0) {
@@ -55,7 +55,7 @@ function hslToRgb(h, s, l, a) {
       r = hueToRgb(p, q, h / 360 + 1 / 3);
       g = hueToRgb(p, q, h / 360);
       b = hueToRgb(p, q, h / 360 - 1 / 3);
-      a = a;
+      a = Math.min(1, Math.max(0, a));
     }
   
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255), a];

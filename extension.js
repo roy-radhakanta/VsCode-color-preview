@@ -4,6 +4,7 @@ const vscode = require("vscode");
 const RGBColorFinder = require('./rgb-color-finder');
 const HEXColorFinder = require('./hex-color-finder');
 const HSLColorFinder = require('./hsl-color-finder');
+const HSLAColorFinder = require('./hsla-color-finder');
 const NamedColorFinder = require('./named-color-finder');
 
 const { mergeDecorationArrays } = require('./utility');
@@ -82,9 +83,10 @@ function previewColors(openedFile) {
   const rgbDecorations = RGBColorFinder(text, openedFile);
   const hexDecorations = HEXColorFinder(text, openedFile);
   const hslDecorations = HSLColorFinder(text, openedFile);
+  const hslaDecorations = HSLAColorFinder(text, openedFile);
   const namedDecorations = NamedColorFinder(text, openedFile);
 
-  colorDecorations = mergeDecorationArrays([rgbDecorations, hexDecorations, hslDecorations, namedDecorations]);
+  colorDecorations = mergeDecorationArrays([rgbDecorations, hexDecorations, hslDecorations, hslaDecorations, namedDecorations]);
 
   /** @type {vscode.TextEditor}*/
   const activeEditor = vscode.window.activeTextEditor;
