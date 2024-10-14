@@ -26,9 +26,10 @@ function mergeDecorationArrays(arrays) {
  * @param {number} h
  * @param {number} s
  * @param {number} l
+ * @param {number} a
  * @returns {number[]}
 */
-function hslToRgb(h, s, l) {
+function hslToRgb(h, s, l, a = 1) {
     let r, g, b;
   
     if (s === 0) {
@@ -54,9 +55,10 @@ function hslToRgb(h, s, l) {
       r = hueToRgb(p, q, h / 360 + 1 / 3);
       g = hueToRgb(p, q, h / 360);
       b = hueToRgb(p, q, h / 360 - 1 / 3);
+      a = Math.min(1, Math.max(0, a));
     }
   
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255), a];
   }
 
 module.exports = {

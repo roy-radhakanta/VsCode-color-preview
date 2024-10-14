@@ -5,10 +5,11 @@ const vscode = require("vscode");
 const RGBColorFinder = require('./rgb-color-finder');
 const HEXColorFinder = require('./hex-color-finder');
 const HSLColorFinder = require('./hsl-color-finder');
+const HSLAColorFinder = require('./hsla-color-finder');
 const NamedColorFinder = require('./named-color-finder');
 const {Log}  = require('./utility/log');
 
-const {mergeDecorationArrays} = require('./utility');
+const { mergeDecorationArrays } = require('./utility');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -20,6 +21,7 @@ function activate(context) {
   if (isFirstActivation) {
     vscode.window.showInformationMessage('Color Preview is Activated 🎉');
     context.globalState.update('firstActivation', false);
+    previewColors(vscode.window.activeTextEditor.document);
   }
 
   const disposable = vscode.commands.registerCommand(
@@ -85,9 +87,10 @@ function previewColors(openedFile) {
   const rgbDecorations = RGBColorFinder(text, openedFile);
   const hexDecorations = HEXColorFinder(text, openedFile);
   const hslDecorations = HSLColorFinder(text, openedFile);
+  const hslaDecorations = HSLAColorFinder(text, openedFile);
   const namedDecorations = NamedColorFinder(text, openedFile);
 
-  colorDecorations = mergeDecorationArrays([rgbDecorations, hexDecorations, hslDecorations, namedDecorations]);
+  colorDecorations = mergeDecorationArrays([rgbDecorations, hexDecorations, hslDecorations, hslaDecorations, namedDecorations]);
 
   /** @type {vscode.TextEditor}*/
   const activeEditor = vscode.window.activeTextEditor;
